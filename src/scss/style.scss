@@ -1,0 +1,19 @@
+.container {
+    margin: 5px;
+    background: greenyellow;
+    .box {
+        padding: 10px;
+        font-size: 20px;
+        color: pink;
+    }
+}
+
+.window {
+    transform: rotate(-45deg);
+}
+
+.window2 {
+    width: 100px;
+    height: 100px;
+    background: url('../images/window.png') repeat center center;
+}
