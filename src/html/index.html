@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<!-- 使用谷歌或者IE最高版本内核渲染 -->
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"
 	/>
-	<!-- 页面宽度为设备的宽度，原始/缩放/最大/最小比例均为1.0，不允许用户缩放 -->
-	<title>888</title>
+	<title>Document</title>
 	<link rel="stylesheet" href="../css/index.css">
 
 </head>
@@ -18,19 +17,6 @@
 			<label for="username">帐号：</label>
 			<input type="text" id="username">
 		</div>
-		<div>
-			<label for="paassword">密码：</label>
-			<input type="text" id="paassword">
-		</div>
-		<div style="margin-top: 10px">
-			<button id="signup">注册</button>
-			<button id="signin">登录</button>
-		</div>
-
-		<div style="margin-top: 10px">
-			<button id="tokencheck">验证</button>
-		</div>
-
 		<p class="text">55555</p>
 
 		<div class="window">
@@ -41,85 +27,8 @@
 
 	</div>
 
+	<script src="../js/common.js"></script>
 	<script src="../js/index.js"></script>
-	<script src="../js/ajax.js"></script>
-	<script>
-
-		var sUserName = document.getElementById('username');
-		var sPassword = document.getElementById('paassword');
-		var oBtnSignUp = document.getElementById('signup');
-		var oBtnSignIn = document.getElementById('signin');
-		var oBtnTokenCheck = document.getElementById('tokencheck');
-
-		const url = 'http://127.0.0.1:8888';
-		const registerUrl = url + '/users/register';
-		const loginUrl = url + '/users/login';
-		const tokenCheckUrl = url + '/check';
-
-		oBtnSignUp.addEventListener('click', function () {
-			if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {
-				alert('帐号或密码不能为空');
-				return;
-			} else {
-				ajax.post(registerUrl, {
-					username: sUserName.value,
-					password: sPassword.value
-				})
-					.then((data) => {
-						if (data.code === '0000') {
-							// 注册成功
-							sUserName.value = '';
-							sPassword.value = '';
-						} else if (data.code === '1001') {
-							// 帐号已注册
-						} else {
-							// 注册失败
-						}
-						alert(JSON.stringify(data));
-					})
-					.catch((err) => {
-						alert('注册请求失败');
-					});
-			}
-		});
-
-		oBtnSignIn.addEventListener('click', function () {
-			if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {
-				alert('帐号或密码不能为空');
-				return;
-			} else {
-				ajax.post(loginUrl, {
-					username: sUserName.value,
-					password: sPassword.value
-				})
-					.then((data) => {
-						if (data.code === '0000') {
-							// 登录成功
-							sUserName.value = '';
-							sPassword.value = '';
-							sessionStorage.setItem('token', data.token);
-						} else {
-							// 登录失败
-						}
-						alert(JSON.stringify(data));
-					})
-					.catch((err) => {
-						alert('注册请求失败');
-					});
-			}
-		});
-
-		oBtnTokenCheck.addEventListener('click', function () {
-			ajax.post(tokenCheckUrl, {})
-				.then((data) => {
-					alert(JSON.stringify(data));
-				})
-				.catch((err) => {
-					alert('注册请求失败');
-				});
-		});
-
-	</script>
 </body>
 
 </html>

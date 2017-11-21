@@ -1,3 +1,16 @@
+@import './reset.scss';
+@import './minxins.scss';
+.window2 {
+    width: px2rem(100);
+    height: px2rem(100);
+    background: url('../images/window.png') repeat center center;
+    @include border-right-radius(25px);
+}
+
+.window {
+    transform: rotateX(120deg);
+}
+
 .container {
     margin: 5px;
     background: greenyellow;
@@ -6,14 +19,4 @@
         font-size: 20px;
         color: pink;
     }
-}
-
-.window {
-    transform: rotate(-45deg);
-}
-
-.window2 {
-    width: 100px;
-    height: 100px;
-    background: url('../images/window.png') repeat center center;
 }

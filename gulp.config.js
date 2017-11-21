@@ -72,7 +72,7 @@ const DevServer = function (dir, port) {
 }
 
 // gulp-autoprefixer 添加浏览器前缀
-exports.Autofx = {
+exports.AutofxConfig = {
     browsers: [
         'ie >= 9',
         'ie_mob >= 10',

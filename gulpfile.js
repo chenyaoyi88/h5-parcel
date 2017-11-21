@@ -10,7 +10,7 @@ const pump = require('pump');
 // 只编译改动过的文件          
 const changed = require('gulp-changed');
 // css 浏览器前缀补全
-const autofx = require('gulp-autoprefixer');
+const autoprefixer = require('gulp-autoprefixer');
 // 压缩 css    
 const cleanCSS = require('gulp-clean-css');
 // js 代码检查
@@ -32,7 +32,7 @@ const Task = require('./gulp.config').Task;
 // 服务器配置
 const DevServer = require('./gulp.config').DevServer;
 // 服务器配置
-const Autofx = require('./gulp.config').Autofx;
+const AutofxConfig = require('./gulp.config').AutofxConfig;
 
 /**
  * 生产-处理 html 文件夹里面的文件
@@ -52,8 +52,8 @@ gulp.task(Task.prod.moveHtml, function () {
  */
 gulp.task(Task.sassToCss, function () {
     return gulp.src(CheckFile.scss)
-        .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-        .pipe(autofx(Autofx))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer(AutofxConfig))
         .pipe(gulp.dest(Config.src + '/css'))
         .pipe(reload({ stream: true }));
 });
@@ -68,7 +68,7 @@ gulp.task(Task.sassToCss, function () {
 gulp.task(Task.prod.moveCss, [Task.sassToCss], function () {
     return gulp.src(CheckFile.css)
         .pipe(changed(OutputFile.css))
-        .pipe(autofx(Autofx))
+        .pipe(autoprefixer(AutofxConfig))
         .pipe(cleanCSS({
             compatibility: 'ie8',
             keepSpecialComments: '*'

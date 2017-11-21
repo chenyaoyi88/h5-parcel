@@ -71,22 +71,3 @@ td,
 th {
   padding: 0;
   text-align: left; }
-
-.window2 {
-  width: 1rem;
-  height: 1rem;
-  background: url("../images/window.png") repeat center center;
-  border-bottom-right-radius: 25px;
-  border-top-right-radius: 25px; }
-
-.window {
-  -webkit-transform: rotateX(120deg);
-          transform: rotateX(120deg); }
-
-.container {
-  margin: 5px;
-  background: greenyellow; }
-  .container .box {
-    padding: 10px;
-    font-size: 20px;
-    color: pink; }
