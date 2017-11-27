@@ -67,7 +67,8 @@ const DevServer = function (dir, port) {
         port: port || 3000,
         // 重载等待时间
         // reloadDelay: 300
-        startPath: '/html/index.html'
+        startPath: '/html/index.html',
+        notify: false
     }
 }
 

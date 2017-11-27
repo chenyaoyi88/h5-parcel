@@ -24,50 +24,100 @@
 })(window);
 
 function json2url(json) {
-    if (JSON.stringify(json) === '{}') {
-        return '';
-    } else {
-        let url = '';
-        for (let name in json) {
-            url += `&${name}=${encodeURI(json[name])}`;
-        }
-        return `?${url.slice(1)}`;
+    json.t = Math.random();
+    var arr = [];
+    for (var name in json) {
+        arr.push(name + '=' + encodeURIComponent(json[name]));
     }
+    return arr.join('&');
 }
 
-const ajax = {
-    get: function (url, oParams) {
-        return new Promise((resolve, reject) => {
-            window.fetch(url + json2url(oParams))
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
-                    resolve(data);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    },
-    post: function (url, oParams) {
-        return new Promise((resolve, reject) => {
-            window.fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-                    },
-                    body: json2url(oParams).substring(1)
-                })
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
-                    resolve(data);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+function ajax(options) {
+    options = options || {};
+    if (!options.url) {
+        return;
     }
+
+    options.data = options.data || {};
+    options.type = options.type || 'get';
+    options.timeout = options.timeout || 0;
+    options.header = options.header || {};
+
+    let xhr = null;
+    let timer = null;
+    const str = json2url(options.data);
+
+    //1 创建
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    if (options.type === 'get') {
+        xhr.open('get', options.url + '?' + str, true);
+        xhr.send();
+    } else {
+        xhr.open('post', options.url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        for (let pro in options.header) {
+            xhr.setRequestHeader(pro, options.header[pro]);
+        }
+        xhr.send(str);
+    }
+
+    return new Promise((resolve, reject) => {
+        xhr.onreadystatechange = function () {
+            // 完成
+            if (xhr.readyState === 4) { 
+                clearTimeout(timer);
+                // 成功
+                if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                    options.success && options.success(JSON.parse(xhr.responseText));
+                    resolve(JSON.parse(xhr.responseText));
+                } else {
+                    //失败
+                    options.error && options.error('error');
+                    reject('error');
+                }
+
+            }
+        };
+
+        if (options.timeout) {
+            timer = setTimeout(function () {
+                reject('timeout');
+                // 终止
+                xhr.abort();
+            }, options.timeout);
+        }
+    });
+
+}
+
+const toast = function (text) {
+    if (document.getElementById('toast')) {
+        return false;
+    }
+
+    const doc = document.body;
+    const toastText = text;
+
+    doc.insertAdjacentHTML(
+        'beforeEnd',
+        `<div class='toast' id='toast'>
+                <div class='toast-wrap'>
+                    <div class='toast-content'>${toastText}</div>
+                </div>
+            </div>`
+    );
+
+    var oToast = document.getElementById('toast');
+    var oToastText = oToast.querySelector('.toast-content');
+
+    oToastText.classList.add('slideInUp', 'animated');
+
+    oToastText.addEventListener('webkitAnimationEnd', function () {
+        doc.removeChild(oToast);
+    });
 }

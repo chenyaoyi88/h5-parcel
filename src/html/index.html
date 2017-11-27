@@ -12,19 +12,21 @@
 </head>
 
 <body>
-	<div class="container">
-		<div class="box">
-			<label for="username">帐号：</label>
-			<input type="text" id="username">
+	<div>
+		<input type="number" id="phone" />
+		<button id="submit">提交</button>
+	</div>
+
+	<div class="modal" id="modal">
+		<div class="modal-wrap">
+			<div class="modal-content">
+				<div class="modal-close pos-tr">&times;</div>
+				<div class="modal-main">
+					<p>内容</p>
+					<button>确定</button>
+				</div>
+			</div>
 		</div>
-		<p class="text">55555</p>
-
-		<div class="window">
-			<img width="100" src="../images/window.png" alt="window">
-		</div>
-
-		<div class="window2"></div>
-
 	</div>
 
 	<script src="../js/common.js"></script>

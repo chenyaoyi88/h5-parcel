@@ -3,6 +3,13 @@
     @return $px*640/640/100+rem;
 }
 
+@mixin align-justify($dir: row, $ai: center, $js: center) {
+    display: flex;
+    flex-direction: $dir;
+    align-items: $ai;
+    justify-content: $js;
+}
+
 // 清除浮动
 @mixin clearfix() {
     &:before,
@@ -13,7 +20,7 @@
     &:after {
         clear: both;
     }
-} 
+}
 
 // 圆角
 @mixin border-top-radius($radius) {
@@ -34,7 +41,7 @@
 @mixin border-left-radius($radius) {
     border-bottom-left-radius: $radius;
     border-top-left-radius: $radius;
-} 
+}
 
 // 1px border
 @mixin border-top($color) {
@@ -81,7 +88,7 @@
     border-right: 1px solid $color;
     transform-origin: 100% 0;
     transform: scaleX(0.5);
-} 
+}
 
 // arrow
 @mixin arrow($direction, $size, $border-width, $border-color) {
