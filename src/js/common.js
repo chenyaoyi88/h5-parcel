@@ -1,3 +1,15 @@
+// var HOST
+var HOST = window.location.host;
+var API = '';
+if (HOST.includes('sit')) {
+    // 测试环境
+    API = '//sit.guanghuobao.com';
+} else if (HOST.includes('www')) {
+    API = '//www.guanghuobao.com';
+} else {
+    API = '//10.2.10.227';
+}
+
 (function (win) {
     const docEl = win.document.documentElement;
     // 设计图宽度：默认按 640 计算
@@ -39,7 +51,7 @@ function ajax(options) {
     }
 
     options.data = options.data || {};
-    options.type = options.type || 'get';
+    options.type = options.type || 'GET';
     options.timeout = options.timeout || 0;
     options.header = options.header || {};
 
@@ -54,11 +66,11 @@ function ajax(options) {
         xhr = new ActiveXObject('Microsoft.XMLHTTP');
     }
 
-    if (options.type === 'get') {
-        xhr.open('get', options.url + '?' + str, true);
+    if (options.type.toUpperCase() === 'GET') {
+        xhr.open('GET', options.url + '?' + str, true);
         xhr.send();
     } else {
-        xhr.open('post', options.url, true);
+        xhr.open('POST', options.url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         for (let pro in options.header) {
             xhr.setRequestHeader(pro, options.header[pro]);

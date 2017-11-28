@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
+const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
 const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
@@ -53,6 +54,9 @@ gulp.task(Task.prod.moveHtml, function () {
 gulp.task(Task.sassToCss, function () {
     return gulp.src(CheckFile.scss)
         .pipe(sass().on('error', sass.logError))
+        .pipe(rename(function (path) {
+           path.dirname = path.dirname.replace('/scss', 'css') 
+        }))
         .pipe(autoprefixer(AutofxConfig))
         .pipe(gulp.dest(Config.src + '/css'))
         .pipe(reload({ stream: true }));
