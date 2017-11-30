@@ -55,7 +55,8 @@ gulp.task(Task.sassToCss, function () {
     return gulp.src(CheckFile.scss)
         .pipe(sass().on('error', sass.logError))
         .pipe(rename(function (path) {
-           path.dirname = path.dirname.replace('/scss', 'css') 
+           path.dirname = path.dirname.replace('/scss', 'css');
+           console.log(path); 
         }))
         .pipe(autoprefixer(AutofxConfig))
         .pipe(gulp.dest(Config.src + '/css'))
