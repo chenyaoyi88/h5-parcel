@@ -1,10 +1,40 @@
-# 打包出来的静态文件
-build
-dist
-manifest.json
+# 日志 #
+logs
+*.log
 
-# 开发依赖 
+# 依赖包 #
 node_modules
 
-# MAC OS存储这个文件夹的显示属性
+# 开发工具 #
+.idea
+.vscode
+*.swp
+
+# 编译 #
+/dll
+/dev
+/dist
+/test
+/prod
+/build
+
+# Mac #
 .DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# SVN #
+/.svn
+
+# Coverage 测试覆盖率 #
+/.coverage
+
+# 文档 #
+/.docs
+
+# 其他
+.cache
+
+# 保密文件不上传 #
+config.ftp.json

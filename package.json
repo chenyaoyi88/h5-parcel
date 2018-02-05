@@ -1,42 +1,53 @@
 {
-  "name": "app-h5-gulp",
+  "name": "parcel-demo",
   "version": "1.0.0",
-  "description": "test",
-  "main": "index.js",
+  "description": "",
   "scripts": {
-    "start": "npm run dev",
-    "clean": "rimraf dist build manifest.json",
-    "dev": "npm run clean && gulp dev",
-    "build": "npm run clean && gulp build-prod",
-    "build:preview": "gulp build-preview"
+    "start": "npm run clean && parcel ./src/index.html",
+    "clean": "rimraf build test dist",
+    "build:test": "npm run clean && cross-env NODE_ENV=test parcel build ./src/index.html -d test --public-url ./",
+    "build:prod": "npm run clean && cross-env NODE_ENV=production parcel build ./src/index.html -d build --public-url ./",
+    "build": "npm run build:prod",
+    "preview:test": "browser-sync start --server test --port 8002 --open external --no-notify",
+    "preview:prod": "browser-sync start --server prod --port 8003 --open external --no-notify",
+    "bp:test": "npm run build:test && npm run preview:test",
+    "bp:prod": "npm run build:prod && npm run preview:prod",
+    "upload:test": "npm run build:test && cross-env NODE_ENV=test node config/project.upload.js"
   },
   "keywords": [
-    "test"
+    "parcel",
+    "es6",
+    "sass"
   ],
-  "author": "cyy",
-  "license": "MIT",
+  "contributors": [
+    "陈耀义"
+  ],
+  "bugs": {
+    "email": "152296058@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chenyaoyi88/h5-parcel.git"
+  },
+  "author": "CYY",
+  "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "@types/node": "^9.4.0",
+    "autoprefixer": "^7.2.4",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "browser-sync": "^2.18.13",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-babel": "^7.0.0",
-    "gulp-changed": "^3.1.1",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-eslint": "^4.0.0",
-    "gulp-htmlmin": "^3.0.0",
-    "gulp-imagemin": "^4.0.0",
-    "gulp-jshint": "^2.0.4",
-    "gulp-md5-assets": "^1.0.1",
-    "gulp-md5-plus": "^1.0.3",
-    "gulp-minify-css": "^1.2.4",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^3.0.0",
-    "pump": "^1.0.3",
+    "browser-sync": "^2.23.6",
+    "cross-env": "^5.1.3",
+    "cyy-tool": "^1.0.8",
+    "ftp": "^0.3.10",
+    "node-sass": "^4.7.2",
+    "parcel-bundler": "^1.5.1",
+    "postcss-modules": "^1.1.0",
     "rimraf": "^2.6.2",
-    "run-sequence": "^2.2.0"
+    "typescript": "^2.7.1"
+  },
+  "dependencies": {
+    "cssnano": "^3.10.0",
+    "n-zepto": "^1.2.0"
   }
 }
