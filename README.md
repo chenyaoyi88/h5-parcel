@@ -87,4 +87,4 @@ npm run upload:test
 
 ### 存在问题
 
-- 打包后的 css，有的 z-index 会被 cssnano 重置回 1，导致显示不正常，找了文档安装 cssnano 在 postcss.config.js 里面设置还是不起效果，因为这个原因暂时没法用......
+暂无

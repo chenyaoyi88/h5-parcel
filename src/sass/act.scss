@@ -74,3 +74,10 @@ button {
     @include align-justify(column);
   }
 }
+
+
+.test-bg {
+  width: 100%;
+  height: px2vw(200);
+  background: url('../images/share.jpg') no-repeat;
+}

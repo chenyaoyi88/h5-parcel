@@ -1,3 +1,1 @@
-{
-    zindex: false
-}
+module.exports = { zindex: false }

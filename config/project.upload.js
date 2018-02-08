@@ -24,7 +24,8 @@ const appName = '/' + require('../config.json').appName;
 // const remotePathLevel = '/act2/2018';
 
 // 完整的上传目录，下面例子是上传到 ftp 的 ./pub/ghb-web/act/2018/01 文件夹下
-const entireBasePath = './pub/ghb-web/act/2018/02' + appName;
+// const entireBasePath = './pub/ghb-web/act/2018/02' + appName;
+const entireBasePath = './public_html/act/2018/02' + appName;
 
 // 目录（文件夹）
 const dir = {
