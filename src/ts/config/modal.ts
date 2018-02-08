@@ -1,5 +1,4 @@
-import * as IMG_success from '../../images/success.png';
-import * as IMG_error from '../../images/error.png';
+import * as IMG_info from '../../images/info.png';
 
 interface ModalConfig {
   // 状态码
@@ -12,20 +11,19 @@ interface ModalConfig {
  * 弹窗的公共配置
  * @param type 弹窗的类型
  */
-const modalConfig = function(options?: ModalConfig) {
+const modalConfig = function (options?: ModalConfig) {
   let imgSrc = '';
   let text1 = '';
   let type = '';
 
   switch (options.code) {
-    case 'success':
-      type = 'success';
-      imgSrc = IMG_success;
-      text1 = '50元奖金即将通过广货宝公众号发送给您！';
-      break;
+    case 'error':
+      type = 'error';
+      imgSrc = IMG_info;
+      text1 = '网络繁忙，请稍后再试！';
     default:
       type = 'error';
-      imgSrc = IMG_error;
+      imgSrc = IMG_info;
       text1 = '网络繁忙，请稍后再试！';
   }
   return {

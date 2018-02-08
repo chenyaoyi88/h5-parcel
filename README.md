@@ -67,7 +67,7 @@ npm run upload:test
 
 ```bash
 ├── config                              # 上传配置
-├── prod/test/dev                       # 打包后的静态文件（打包成功后才会出现）
+├── prod/test                           # 打包后的静态文件（打包成功后才会出现）
 ├── node_modules                        # 项目依赖包（需要安装）
 ├── src                                 # 开发目录
 │   ├── images                          # 图片文件
@@ -77,7 +77,10 @@ npm run upload:test
 │   ├── index.d.ts                      # 声明文件
 │   ├── favicon.ico                     # 网站图标
 │   └── index.html                      # 单页模版
-├── .gitignore                          # 不提交到 git 的文件
+├── .babelrc                            # js兼容处理
+├── config.ftp.json                     # ftp 上传配置
+├── cssnano.config.js                   # 专门处理 cssnano 将 z-index 打包之后变回 1 的设置
+├── imagemin.config.js                  # 图片压缩配置
 ├── package.json                        # 项目说明文件
 ├── postcss.config.js                   # postcss 配置文件
 ├── README.md                           # 此文件
@@ -87,4 +90,4 @@ npm run upload:test
 
 ### 存在问题
 
-暂无
+- 暂无不能自定义输入文件有自定义文件夹（https://github.com/parcel-bundler/parcel/pull/745）
