@@ -1,1 +1,4 @@
-module.exports = { zindex: false }
+module.exports = {
+    zindex: false,
+    reduceIdents: false
+}

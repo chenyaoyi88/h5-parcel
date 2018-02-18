@@ -91,3 +91,4 @@ npm run upload:test
 ### 存在问题
 
 - 暂无不能自定义输入文件有自定义文件夹（https://github.com/parcel-bundler/parcel/pull/745）
+- 暂时没有针对这个工具的图片压缩插件，parcel-plugin-imagemin 有BUG会报错

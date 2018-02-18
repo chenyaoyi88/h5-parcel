@@ -1,9 +1,7 @@
-
 declare module '*.png';
 declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.svg';
 declare module '*.gif';
-declare var wx: any;
 
-declare var pro: any;
+declare var wx: any;
