@@ -37,6 +37,7 @@ switch (process.env.NODE_ENV) {
 }
 // 远程基本路径
 const remoteBasePath = './pub/ghb-web/act';
+// const remoteBasePath = './public_html/act';
 // 远程层级路径，如：/2018/08/appName
 const remotePathLevel = `/${configInfo.onlineYear}/${configInfo.onlineMonth}/${configInfo.appName}`;
 // 完整的上传目录，下面例子是上传到 ftp 的 ./pub/ghb-web/act/2018/08/appName 文件夹下

@@ -38,3 +38,5 @@ Thumbs.db
 
 # 保密文件不上传 #
 config.ftp.json
+config.ftp.test.json
+config.ftp.prod.json

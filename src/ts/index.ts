@@ -1,10 +1,12 @@
 import '../sass/index.scss';
 import { toast, loading, modal } from '../component';
-import { Tool, ajax, api } from './util';
+import { Tool, ajax } from './util';
 import { weixin } from './weixin';
 import { modalConfig } from './config';
+import { api, appDownload } from './co';
 
 Tool.domReady(function () {
+
     weixin.init();
 
     document.addEventListener('click', function (ev) {

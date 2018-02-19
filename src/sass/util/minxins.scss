@@ -11,6 +11,7 @@
     justify-content: center;
 }
 
+// 遮罩
 @mixin mask($zindex) {
     position: fixed;
     left: 0;

@@ -1,5 +1,6 @@
-import { api, ajax } from './util';
-import shareIMG from '../images/share.jpg';
+import { ajax } from './util';
+import { api } from './co';
+import * as shareIMG from '../images/share.jpg';
 
 /**
  * 微信js-sdk所需参数
@@ -46,13 +47,14 @@ const weixin = {
     // 分享描述（分享描述不能过长，否则会影响分享图标分享给好友时无法正常显示）
     desc: '分享描述',
     // 分享图标
-    imgUrl: 'https:' + shareIMG,
+    imgUrl: '//' + window.location.host + shareIMG,
     // 分享类型,music、video或link，不填默认为link
     type: '',
     // 如果type是music或video，则要提供数据链接，默认为空
     dataUrl: ''
   },
   init: function () {
+    alert('//' + window.location.host + '/' + shareIMG);
     // 非开发环境发送请求
     if (Env !== 'development') {
       // 请求拿微信 js-sdk 配置参数

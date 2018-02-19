@@ -1,6 +1,6 @@
 {
   "name": "h5-parcel-demo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "用 parcel + typescript + sass 来开发单页活动的模版",
   "main": "index.ts",
   "scripts": {
