@@ -46,5 +46,8 @@
     "node-sass": "^4.7.2",
     "parcel-bundler": "^1.6.1",
     "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "cyy-tool": "^1.0.11"
   }
 }

@@ -54,7 +54,6 @@ const weixin = {
     dataUrl: ''
   },
   init: function () {
-    alert('//' + window.location.host + '/' + shareIMG);
     // 非开发环境发送请求
     if (Env !== 'development') {
       // 请求拿微信 js-sdk 配置参数

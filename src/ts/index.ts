@@ -1,13 +1,17 @@
 import '../sass/index.scss';
+import { domReady, http } from 'cyy-tool';
 import { toast, loading, modal } from '../component';
-import { Tool, ajax } from './util';
+import { api, appDownload } from './co';
 import { weixin } from './weixin';
 import { modalConfig } from './config';
-import { api, appDownload } from './co';
 
-Tool.domReady(function () {
+domReady(function () {
 
     weixin.init();
+    
+    http.get('https://www.easy-mock.com/mock/5a30fa3f7ea45c08a5db3128/mock/user/list').then((res) => {
+        console.log(res);
+    });
 
     document.addEventListener('click', function (ev) {
         const oEvent = ev || event;
