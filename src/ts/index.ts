@@ -1,14 +1,15 @@
 import '../sass/index.scss';
 import { domReady, http } from 'cyy-tool';
 import { toast, loading, modal } from '../component';
-import { api, appDownload } from './co';
-import { weixin } from './weixin';
 import { modalConfig } from './config';
+import { api } from './api';
+import { appDownload } from './hy';
+import { weixin } from './weixin';
 
 domReady(function () {
 
     weixin.init();
-    
+
     http.get('https://www.easy-mock.com/mock/5a30fa3f7ea45c08a5db3128/mock/user/list').then((res) => {
         console.log(res);
     });
@@ -33,13 +34,13 @@ domReady(function () {
                 modal.show(modalConfig({
                     code: 'success',
                     beforeOpenCallback: function () {
-                        alert('准备打开弹窗');
+                        console.log('准备打开弹窗');
                     },
                     openCallback: function () {
-                        alert('弹窗打开结束');
+                        console.log('弹窗打开结束');
                     },
                     confirmCallback: function () {
-                        alert('弹窗关闭结束');
+                        console.log('弹窗关闭结束');
                     }
                 }));
                 break;

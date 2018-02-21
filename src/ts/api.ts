@@ -1,8 +1,4 @@
 const APP_ENV = process.env.NODE_ENV || 'production';
-// 非生产环境，将 index.html 导进来，从而达到修改 html 文件的时候触发 reload
-if (APP_ENV === 'production') {
-  console.log = console.dir = console.table =  function() {};
-}
 
 console.log('当前环境：' + APP_ENV);
 
@@ -13,6 +9,7 @@ if (APP_ENV === 'development') {
   requestHost = '//127.0.0.1:4000';
 } else {
   requestHost = '//' + window.location.host;
+  console.log = console.dir = console.table =  function() {};
 }
 
 const api = {
