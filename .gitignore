@@ -13,9 +13,8 @@ node_modules
 # 编译 #
 /dll
 /dev
-/dist
-/test
-/prod
+/dist_test
+/dist_prod
 /build
 
 # Mac #
