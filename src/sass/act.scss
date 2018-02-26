@@ -6,8 +6,6 @@ input {
     font-size: 20px;
     line-height: normal;
     text-align: center;
-    border: none;
-    outline: none;
     box-shadow: 0 0 0px 1000px white inset !important;
     border-radius: 5px;
   } // placeholder 样式
@@ -26,8 +24,6 @@ button {
     font-size: px2vw(32);
     color: #fff;
     background: #ffbf06;
-    border: none;
-    outline: none;
     border-radius: px2vw(40);
     &:disabled {
       color: #fdfdfd;

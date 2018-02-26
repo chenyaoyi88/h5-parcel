@@ -1,19 +1,20 @@
 {
   "name": "h5-parcel-demo",
-  "version": "1.0.1",
-  "description": "用 parcel + typescript + sass 来开发单页活动的模版",
+  "version": "1.0.2",
+  "description": "用 parcel + typescript + sass 来开发单页活动的模版，用 puppeteer 来做界面自动化测试",
   "main": "index.ts",
   "scripts": {
-    "clean": "rimraf build test prod dist .cache",
+    "clean": "rimraf build dist_test dist_prod dist .cache",
     "start": "npm run clean && parcel src/index.html",
-    "build:test": "npm run clean && cross-env NODE_ENV=test parcel build ./src/index.html -d test --public-url ./",
-    "build:prod": "npm run clean && cross-env NODE_ENV=production parcel build ./src/index.html -d prod --public-url ./",
-    "preview:test": "browser-sync start --server test --port 8002 --no-open external --no-notify",
-    "preview:prod": "browser-sync start --server prod --port 8003 --no-open external --no-notify",
+    "build:test": "npm run clean && cross-env NODE_ENV=test parcel build ./src/index.html -d dist_test --public-url ./",
+    "build:prod": "npm run clean && cross-env NODE_ENV=production parcel build ./src/index.html -d dist_prod --public-url ./",
+    "preview:test": "browser-sync start --server dist_test --port 8002 --no-open external --no-notify",
+    "preview:prod": "browser-sync start --server dist_prod --port 8003 --no-open external --no-notify",
     "bp:test": "npm run build:test && npm run preview:test",
     "bp:prod": "npm run build:prod && npm run preview:prod",
     "upload:test": "npm run build:test && cross-env NODE_ENV=test node config/project.upload.js",
-    "upload:prod": "npm run build:prod && cross-env NODE_ENV=production node config/project.upload.js"
+    "upload:prod": "npm run build:prod && cross-env NODE_ENV=production node config/project.upload.js",
+    "test": "npm run build:test && node test/index.js"
   },
   "keywords": [
     "parcel",
@@ -38,13 +39,17 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^9.4.6",
+    "async-limiter": "^1.0.0",
     "autoprefixer": "^8.0.0",
     "browser-sync": "^2.23.6",
     "chalk": "^2.3.1",
     "cross-env": "^5.1.3",
     "ftp": "^0.3.10",
+    "internal-ip": "^3.0.1",
     "node-sass": "^4.7.2",
-    "parcel-bundler": "^1.6.1",
+    "ora": "^2.0.0",
+    "parcel-bundler": "^1.6.2",
+    "puppeteer": "^1.1.1",
     "typescript": "^2.7.2"
   },
   "dependencies": {

@@ -14,7 +14,10 @@ const ftpConfig_Test = require('../config.ftp.test.json');
  *   "password": "密码"
  * }
  */
-const PROJECT = require('./project.config');
+const projectDir = {
+  dist_prod: '../dist_prod/',
+  dist_test: '../dist_test/'
+};
 const configInfo = require('../config.info.json');
 // 本地要上传的目录（文件夹）
 let localUploadDir = '';
@@ -25,12 +28,12 @@ let ftpConfig = {};
 
 switch (process.env.NODE_ENV) {
   case 'test':
-    localUploadDir = path.resolve(__dirname, PROJECT.PATH.TEST);;
+    localUploadDir = path.resolve(__dirname, projectDir.dist_test);;
     urlEnv = 'sit';
     ftpConfig = ftpConfig_Test;
     break;
   case 'production':
-    localUploadDir = path.resolve(__dirname, PROJECT.PATH.PROD);;
+    localUploadDir = path.resolve(__dirname, projectDir.dist_prod);;
     urlEnv = 'www';
     // ftpConfig = ftpConfig_Prod;
     break;

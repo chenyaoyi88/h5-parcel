@@ -13,7 +13,7 @@
 ```javascript
 npm install
 
-// 或者
+// 国内推荐 cnpm
 cnpm install
 ```
 
@@ -32,13 +32,10 @@ npm start
 打包各种环境：
 
 ```bash
-# 开发
-npm run build:dev
-
-# 测试
+# 打包测试环境
 npm run build:test
 
-# 生产/正式
+# 打包生产/正式环境
 npm run build:prod
 ```
 
@@ -53,34 +50,53 @@ npm run preview:test
 npm run preview:prod
 ```
 
-##### 打包完后直接上传到 ftp（测试环境）：
+##### 打包完后直接上传到 ftp：
 
-注：目前只添加上传到测试环境的命令，待详细测试之后添加上传正式环境的命令
+注：填写了测试环境 ftp 配置的 config.ftp.test.json 和生产环境的 ftp 配置的 config.ftp.prod.json 自行准备在 package.json 同级根目录下，不要忘记在 .gitignore 中添加忽略这两个文件，格式如下：
+
+```json
+{
+  "host": "主机",
+  "user": "用户名",
+  "password": "密码"
+}
+```
 
 ```bash
 
 # 打包【测试】环境静态文件，然后直接上传到测试环境 ftp
 npm run upload:test
+
+# 打包【生产】环境静态文件，然后直接上传到生产环境 ftp（建议手动上传或者推送代码到 master 分支用 jekins 发布）
+npm run upload:prod
+```
+
+##### 打包测试环境代码并使用 puppeteer 进行界面自动化测试：
+
+```bash
+npm run test
 ```
  
 ### 目录结构描述
 
 ```bash
 ├── config                              # 上传配置
-├── prod/test                           # 打包后的静态文件（打包成功后才会出现）
-├── node_modules                        # 项目依赖包（需要安装）
+├── dist_prod/dist_test                 # 打包后的静态文件（打包成功后才会出现）
+├── node_modules                        # 项目依赖包
 ├── src                                 # 开发目录
+│   ├── component                       # 组件（迭代后单独出来 import 引入）
 │   ├── images                          # 图片文件
 │   ├── sass                            # scss 样式文件
 │   ├── ts                              # ts 文件
-│   ├── vendor                          # 第三方库或工具
-│   ├── index.d.ts                      # 声明文件
 │   ├── favicon.ico                     # 网站图标
 │   └── index.html                      # 单页模版
 ├── .babelrc                            # js兼容处理
-├── config.ftp.json                     # ftp 上传配置
-├── cssnano.config.js                   # 专门处理 cssnano 将 z-index 打包之后变回 1 的设置
+├── config.ftp.test.json                # 测试环境 ftp 上传配置
+├── config.ftp.prod.json                # 生产环境 ftp 上传配置
+├── config.info.json                    # 项目信息
+├── cssnano.config.js                   # cssnano 额外配置
 ├── imagemin.config.js                  # 图片压缩配置
+├── index.d.ts                          # 项目声明文件
 ├── package.json                        # 项目说明文件
 ├── postcss.config.js                   # postcss 配置文件
 ├── README.md                           # 此文件

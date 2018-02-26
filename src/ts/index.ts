@@ -8,10 +8,10 @@ import { weixin } from './weixin';
 
 domReady(function () {
 
-    weixin.init();
+    // weixin.init();
 
     http.get('https://www.easy-mock.com/mock/5a30fa3f7ea45c08a5db3128/mock/user/list').then((res) => {
-        console.log(res);
+        console.dir('请求结果成功', res.data);
     });
 
     document.addEventListener('click', function (ev) {
