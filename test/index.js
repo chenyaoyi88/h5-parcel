@@ -95,7 +95,7 @@ browserSync({
         browser.close();
         process.exit(0);
     } catch (e) {
-        spinner.fail(`${e.message}`);
+        console.log(e.message);
         process.exit(1);
     }
 })();

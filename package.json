@@ -53,6 +53,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
+    "cyy-component-act": "^1.0.0",
     "cyy-tool": "^1.0.11"
   }
 }
