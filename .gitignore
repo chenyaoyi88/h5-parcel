@@ -14,8 +14,8 @@ node_modules
 /dll
 /dev
 /dist
-/test
-/prod
+/dist_test
+/dist_prod
 /build
 
 # Mac #
