@@ -58,7 +58,13 @@ npm run preview:prod
 {
   "host": "主机",
   "user": "用户名",
-  "password": "密码"
+  "password": "密码",
+  // 如：https://www.baidu.com/baidu-web/act
+  // 访问首页：https://www.baidu.com/baidu-web/act/index.html
+  // 访问图片：https://www.baidu.com/baidu-web/act/images/test.png
+  "url": "访问路径",  
+  // 如：./pub/baidu-web/act
+  "uploadPath": "上传路径"
 }
 ```
 
