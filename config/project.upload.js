@@ -11,67 +11,71 @@ const ftpConfig_Test = require('../config.ftp.test.json');
  * {
  *   "host": "主机",
  *   "user": "用户名",
- *   "password": "密码"
+ *   "password": "密码",
+ *   "url": "访问路径",
+ *   "uploadPath": "上传路径"
  * }
  */
 const PROJECT = require('./project.config');
 const configInfo = require('../config.info.json');
 // 本地要上传的目录（文件夹）
 let localUploadDir = '';
-// 环境切换
-let urlEnv = '';
 // ftp 配置
 let ftpConfig = {};
 
 switch (process.env.NODE_ENV) {
   case 'test':
-    localUploadDir = path.resolve(__dirname, PROJECT.PATH.TEST);;
-    urlEnv = 'sit';
+    localUploadDir = path.resolve(__dirname, PROJECT.PATH.TEST);
     ftpConfig = ftpConfig_Test;
     break;
   case 'production':
-    localUploadDir = path.resolve(__dirname, PROJECT.PATH.PROD);;
-    urlEnv = 'www';
+    localUploadDir = path.resolve(__dirname, PROJECT.PATH.PROD);
     // ftpConfig = ftpConfig_Prod;
     break;
 }
 // 远程基本路径
-const remoteBasePath = './pub/ghb-web/act';
-// const remoteBasePath = './public_html/act';
+const uploadBasePath = ftpConfig.uploadPath;
 // 远程层级路径，如：/2018/08/appName
-const remotePathLevel = `/${configInfo.onlineYear}/${configInfo.onlineMonth}/${configInfo.appName}`;
+const uploadPathLevel = `/${configInfo.onlineYear}/${configInfo.onlineMonth}/${configInfo.appName}`;
 // 完整的上传目录，下面例子是上传到 ftp 的 ./pub/ghb-web/act/2018/08/appName 文件夹下
-const entireUploadPath = remoteBasePath + remotePathLevel;
+const entireUploadPath = uploadBasePath + uploadPathLevel;
+// 文件访问基本路径
+const fileAccessBasePath = `${ftpConfig.url + uploadPathLevel}`;
 // 访问链接
-const accessUrl = `https://${urlEnv}.guanghuobao.com/ghb-web/act${remotePathLevel}/index.html`;
-// 所有的文件个数
-let aUploadFiles = [];
-// 上传成功的文件
-let aUploadSuccessFiles = [];
+const accessUrl = `${fileAccessBasePath}/index.html`;
 
 log('上传的文件夹路径：' + chalk.green(localUploadDir));
 
-// 计算文件个数
-readDirLoop(localUploadDir, function (err, data) {
-  aUploadFiles = data;
-
-  ftp.on('ready', function () {
-    console.log(chalk.green('ftp 连接成功'), '\n');
-    // 延迟 1 秒连接 ftp，因为上面 readDirLoop 递归计算文件个数需要时间，而且不知道什么时候计算完
-    setTimeout(function () {
-      createProjectBaseDir(entireUploadPath).then(() => {
-        console.log(`约 ${chalk.green(aUploadFiles.length)} 个文件需要上传`);
+// 这里只是递归计算要上传文件的总数
+readDirFile({
+  localDirPath: localUploadDir,
+  success: function (err, aUploadFiles) {
+    ftp.on('ready', function () {
+      console.log(chalk.green('ftp 连接成功'), '\n');
+      createBaseDir(entireUploadPath).then(() => {
+        console.log(`共有 ${chalk.green(aUploadFiles.length)} 个文件需要上传`);
         log(chalk.green('开始上传文件...'));
-        readUploadDir(localUploadDir, entireUploadPath);
+        // 这里是递归上传所有文件
+        readDirFile({
+          localDirPath: localUploadDir,
+          uploadDirPath: entireUploadPath,
+          uploadFilesLength: aUploadFiles.length,
+          isUpload: true,
+          accessUrl: accessUrl,
+          fileAccessBasePath: fileAccessBasePath,
+          success: function (err, data) {
+            console.log(chalk.green('上传完成'));
+          }
+        });
       });
-    }, 1000);
-  });
+    });
 
-  ftp.on('error', function (err) {
-    log(chalk.red('ftp 连接失败'));
-  });
+    ftp.on('error', function (err) {
+      log(chalk.red('ftp 连接失败'));
+    });
 
-  ftp.connect(ftpConfig_Test);
+    ftp.connect(ftpConfig);
+  }
 });
 
 /**
@@ -80,7 +84,7 @@ readDirLoop(localUploadDir, function (err, data) {
  * @param {any} basePath 要创建的本项目文件夹 FTP 位置
  * @returns
  */
-function createProjectBaseDir(basePath) {
+function createBaseDir(basePath) {
   return new Promise((resolve, reject) => {
     ftp.mkdir(basePath, true, function (err) {
       if (err) {
@@ -95,112 +99,117 @@ function createProjectBaseDir(basePath) {
   });
 }
 
-/**
- * 上传文件
- *
- * @param {any} uploadPath 本地文件路径
- * @param {any} remotePath 上传的文件的远程路径
- * @param {any} file 要上传的文件
- */
-function uploadFile(uploadPath, remotePath, file) {
-  const remoteFilePath = remotePath + '/' + file;
-  ftp.put(path.join(uploadPath, file), remoteFilePath, function (err) {
-    if (err) {
-      console.log(file, chalk.red('上传文件失败：'), err);
-      console.log(chalk.yellow('尝试重新上传：'), file);
-      return uploadFile(uploadPath, remotePath, file);
-    }
-    console.log(remoteFilePath, chalk.green('上传成功'));
-    aUploadSuccessFiles.push(remoteFilePath);
-    console.log('已成功上传：' + chalk.green(aUploadSuccessFiles.length) + ' 个');
-    if (aUploadSuccessFiles.length === aUploadFiles.length) {
-      ftp.end();
-      log(chalk.green('上传完成'));
-      console.log('Access Url:', chalk.green(accessUrl));
-      process.exit(0);
-    }
-  });
-}
-
-/**
- * 读取要上传的文件夹
- *
- * @param {any} uploadPath 本地文件路径
- * @param {any} remotePath 上传的文件的远程路径
- */
-function readUploadDir(uploadPath, remotePath) {
-  fs.readdir(uploadPath, function (err, files) {
-    if (err) {
-      console.log(chalk.red('读取文件夹错误：'), err);
-      ftp.end();
-      return;
-    }
-    files.forEach((file, index) => {
-      let readLocalFile = path.join(uploadPath, file);
-      fs.stat(readLocalFile, function (err, stat) {
-        if (err) {
-          console.log(chalk.red('检测文件夹错误：'), err);
-          ftp.end();
-          return;
-        }
-        if (stat.isFile()) {
-          // 如果是文件，直接上传
-          uploadFile(uploadPath, remotePath, file);
-        } else if (stat.isDirectory()) {
-          // 如果是文件夹，递归处理
-          const nextLevelRemoteFilePath = remotePath + '/' + file;
-          ftp.mkdir(nextLevelRemoteFilePath, true, function (err) {
-            if (err) {
-              console.log(chalk.red('创建项目目录失败：'), err);
-              return;
-            }
-            readLocalFile = path.join(uploadPath, file);
-            readUploadDir(readLocalFile, nextLevelRemoteFilePath);
-          });
-        } else {
-          // 如果不是文件也不是文件夹，输出看看是什么玩意
-          console.log('什么玩意：', stat);
-        }
-      });
-    });
-  });
-}
-
-/**
- * 递归计算文件个数
- *
- * @param {any} uploadPath
- * @param {any} callback
- */
-function readDirLoop(uploadPath, callback) {
-  let results = [];
-  fs.readdir(uploadPath, function (err, files) {
-    if (err) return callback(err);
-    let pending = files.length;
-    if (!pending) return callback(null, results);
-    files.forEach(file => {
-      file = path.join(uploadPath, file);
-      // let readLocalFile = path.resolve(uploadPath, file);
-      fs.stat(file, function (err, stat) {
-        if (stat.isFile()) {
-          results.push(file);
-          if (!--pending) callback(null, results);
-        } else if (stat.isDirectory()) {
-          readDirLoop(file, function (err, res) {
-            results = results.concat(res);
-            if (!--pending) callback(null, results);
-          });
-        } else {
-          // 如果不是文件也不是文件夹，输出看看是什么玩意
-          console.log('什么玩意：', stat);
-        }
-      });
-    });
-  });
-}
-
 function log(msg) {
   console.log(' ');
   console.log(msg);
   console.log(' ');
+}
+
+function readDirFile(opts) {
+  const options = opts || {};
+  options.localDirPath = opts.localDirPath || '';
+  options.uploadDirPath = opts.uploadDirPath || '';
+  options.uploadFilesLength = opts.uploadFilesLength || 0;
+  options.isUpload = opts.isUpload || false;
+  options.accessUrl = opts.accessUrl || '';
+  options.fileAccessBasePath = opts.fileAccessBasePath || '';
+
+  let fileList = [];
+  let aUploadSuccessFile = [];
+  let aUploadSuccessFileUrl = [];
+
+  readDirRecur(options);
+
+  /**
+   * 递归读取文件
+   * 
+   * @param {any} options 
+   */
+  function readDirRecur(options) {
+    fs.readdir(options.localDirPath, function (err, files) {
+
+      if (err) return options.success(err, []);
+
+      let count = 0
+      const checkEnd = function () {
+        ++count == files.length && options.success({}, fileList);
+      }
+
+      files.forEach(function (file) {
+        const fullPath = options.localDirPath + '/' + file;
+        fs.stat(fullPath, function (err, stats) {
+          if (stats.isDirectory()) {
+            if (options.isUpload) {
+              // 如果是文件夹，递归处理
+              const nextLevelDirPath = options.uploadDirPath + '/' + file;
+              ftp.mkdir(nextLevelDirPath, true, function (err) {
+                if (err) {
+                  console.log(chalk.red('创建项目目录失败：'), err);
+                  return;
+                }
+                return readDirRecur({
+                  localDirPath: fullPath,
+                  uploadDirPath: nextLevelDirPath,
+                  success: options.success,
+                  isUpload: options.isUpload
+                });
+              });
+            } else {
+              return readDirRecur({
+                localDirPath: fullPath,
+                success: checkEnd
+              });
+            }
+          } else {
+            if (options.isUpload) {
+              // 如果是文件，直接上传
+              uploadFile(options.localDirPath, options.uploadDirPath, file);
+            } else {
+              fileList.push(fullPath);
+              checkEnd();
+            }
+          }
+        });
+      });
+
+      files.length === 0 && options.success({}, fileList);
+    })
+  }
+
+  /**
+   * 文件上传
+   * 
+   * @param {any} localDirPath 本地文件路径
+   * @param {any} uploadDirPath 上传文件路径
+   * @param {any} file 文件
+   */
+  function uploadFile(localDirPath, uploadDirPath, file) {
+    const remoteFilePath = uploadDirPath + '/' + file;
+    const remoteAccessPath = options.fileAccessBasePath + remoteFilePath.split(options.uploadDirPath)[1];
+    ftp.put(path.join(localDirPath, file), remoteFilePath, function (err) {
+      if (err) {
+        if (err.code === 'ECONNRESET') {
+          console.log(chalk.yellow('连接断开，等待复位后继续上传'), file);
+        } else {
+          console.log(file, chalk.red('上传文件出现错误：'), err);
+        }
+        return uploadFile(localDirPath, uploadDirPath, file);
+      }
+      aUploadSuccessFile.push(remoteFilePath);
+      aUploadSuccessFileUrl.push(remoteAccessPath);
+
+      console.log(file, chalk.green('上传成功'));
+      console.log('文件位置：' + chalk.cyanBright(remoteFilePath));
+      console.log('访问路径：' + chalk.green(remoteAccessPath));
+      console.log('已成功上传：' + chalk.green(aUploadSuccessFile.length) + ' 个\n');
+
+      if (aUploadSuccessFile.length === options.uploadFilesLength) {
+        ftp.end();
+        console.log('Access Url:', chalk.green(options.accessUrl), '\n');
+        options.success && options.success({}, aUploadSuccessFileUrl);
+        process.exit(0);
+      }
+    });
+  }
+
 }

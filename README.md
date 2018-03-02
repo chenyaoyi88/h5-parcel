@@ -74,6 +74,11 @@ npm run upload:prod
 ##### 打包测试环境代码并使用 puppeteer 进行界面自动化测试：
 
 ```bash
+# 测试之前先安装测试工具（默认不安装，因为太大，puppeteer 安装里面包含了 Chromium，120MB，国内推荐使用 cnpm 安装）
+cnpm install puppeteer async-limiter -D
+# 国内推荐使用 cnpm 安装
+
+# 其实就是执行 node test/index.js
 npm run test
 ```
  
@@ -95,7 +100,7 @@ npm run test
 ├── config.ftp.prod.json                # 生产环境 ftp 上传配置
 ├── config.info.json                    # 项目信息
 ├── cssnano.config.js                   # cssnano 额外配置
-├── imagemin.config.js                  # 图片压缩配置
+├── imagemin.config.js                  # 图片压缩配置（目前是自己写的后期处理）
 ├── index.d.ts                          # 项目声明文件
 ├── package.json                        # 项目说明文件
 ├── postcss.config.js                   # postcss 配置文件
@@ -107,4 +112,4 @@ npm run test
 ### 存在问题
 
 - 暂无不能自定义输入文件有自定义文件夹（https://github.com/parcel-bundler/parcel/pull/745）
-- 暂时没有针对这个工具的图片压缩插件，parcel-plugin-imagemin 有BUG会报错
+- 暂时没有针对这个工具的图片压缩插件，parcel-plugin-imagemin 有BUG会报错，因此自行在打包完成后添加了图片优化

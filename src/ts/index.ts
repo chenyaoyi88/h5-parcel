@@ -1,6 +1,6 @@
 import '../sass/index.scss';
 import { domReady, http } from 'cyy-tool';
-import { toast, loading, modal } from 'cyy-component-act';
+import { toast, loading, modal, cInputKeyboard } from 'cyy-component-act';
 import { modalConfig } from './config';
 import { api } from './api';
 import { appDownload } from './hy';
@@ -52,6 +52,19 @@ domReady(function () {
                 setTimeout(function () {
                     loading.hide();
                 }, 2000);
+                break;
+            case 'show-custom-keyboard':
+                cInputKeyboard.show('custom-input-keyboard', {
+                    wrapClass: 'fuck',
+                    title: '请输入验证码',
+                    isShow: true,
+                    len: 6,
+                    compelete: function (data: string) {
+                        setTimeout(() => {
+                            cInputKeyboard.close();
+                        }, 1000);
+                    }
+                });
                 break;
         }
 
