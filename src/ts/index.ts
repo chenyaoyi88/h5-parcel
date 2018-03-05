@@ -5,7 +5,6 @@ import { modalConfig } from './config';
 import { api } from './api';
 import { appDownload } from './hy';
 import { weixin } from './weixin';
-
 domReady(function () {
 
     weixin.init();
@@ -57,9 +56,10 @@ domReady(function () {
                 cInputKeyboard.show('custom-input-keyboard', {
                     wrapClass: 'fuck',
                     title: '请输入验证码',
-                    isShow: true,
+                    isShowInput: true,
                     len: 6,
                     compelete: function (data: string) {
+                        console.log(data);
                         setTimeout(() => {
                             cInputKeyboard.close();
                         }, 1000);
