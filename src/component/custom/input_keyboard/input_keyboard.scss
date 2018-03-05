@@ -1,0 +1,179 @@
+@import '../../_variables.scss';
+
+$ci_bgColor: #f5f5f5;
+$ci_borderColor: #bfbfbf;
+.input-keyboard-wrap {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $zIndex-cki-base;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    .input-keyboard-wrap-bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: $zIndex-cki-lv1;
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: .4s all ease;
+        opacity: 0;
+    }
+    .input-wrap {
+        position: relative;
+        z-index: $zIndex-cki-lv2;
+        text-align: center;
+        margin-bottom: 65%;
+        background-color: $ci_bgColor;
+        padding: 15px;
+        transition: .4s all ease;
+        opacity: 0;
+        transform: scale(0.8);
+        .input-num-wrap {
+            .input-num-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            .input-num-list {
+                border: 1px solid $ci_borderColor;
+                display: flex;
+                strong {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 30px;
+                    font-weight: normal;
+                    background-color: $ci_bgColor;
+                    border-left: 1px solid $ci_borderColor;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    &:first-child {
+                        border-left: none;
+                    }
+                }
+            }
+        }
+    }
+    .keyboard-wrap {
+        background-color: $ci_bgColor;
+        position: fixed;
+        left: 0;
+        bottom: -50%;
+        z-index: $zIndex-cki-lv2;
+        width: 100%;
+        flex: 1;
+        transition: .4s ease all;
+        .keyboard-header-wrap {
+            height: 30px;
+            position: relative;
+            z-index: $zIndex-cki-lv3;
+            background-color: $ci_bgColor;
+            cursor: pointer;
+            &::before {
+                display: block;
+                content: ' ';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: $zIndex-cki-lv3;
+                width: 20px;
+                height: 1px;
+                background-color: $ci_borderColor;
+                transform: scaleY(0.5) rotate(45deg);
+                margin-left: -14px;
+            }
+            &::after {
+                display: block;
+                content: ' ';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: $zIndex-cki-lv3;
+                width: 20px;
+                height: 1px;
+                background-color: $ci_borderColor;
+                transform: scaleY(0.5) rotate(-45deg);
+            }
+            &:active {
+                background-color: #e0e0e0;
+            }
+        }
+        .keyboard-content-wrap {
+            width: 100%;
+            tbody {
+                tr {
+                    td {
+                        width: 33.3%;
+                        padding: 12px 0;
+                        text-align: center;
+                        font-size: 32px;
+                        color: #353535;
+                        user-select: none;
+                        position: relative;
+                        z-index: $zIndex-cki-lv2;
+                        cursor: pointer;
+                        &:before {
+                            content: ' ';
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            height: 1px;
+                            z-index: $zIndex-cki-lv3;
+                            border-top: 1px solid $ci_borderColor;
+                            transform-origin: 0 0;
+                            transform: scaleY(0.5);
+                        }
+                        &:after {
+                            content: ' ';
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            width: 1px;
+                            height: 100%;
+                            z-index: $zIndex-cki-lv3;
+                            border-left: 1px solid $ci_borderColor;
+                            transform-origin: 0 0;
+                            transform: scaleX(0.5);
+                        }
+                        &:first-child {
+                            border-left: none;
+                            &:after {
+                                border-left: none;
+                            }
+                        }
+                        &:active {
+                            background-color: $ci_borderColor;
+                        }
+                        &.dark {
+                            background-color: #e0e0e0;
+                        }
+                        &.delete {
+                            &:active {
+                                background-color: $ci_borderColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.show-animate {
+        visibility: visible;
+        .input-keyboard-wrap-bg {
+            opacity: 1;
+        }
+        .input-wrap {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .keyboard-wrap {
+            bottom: 0;
+        }
+    }
+}
