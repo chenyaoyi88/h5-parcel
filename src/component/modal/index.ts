@@ -1,6 +1,6 @@
 import './modal.scss';
 
-interface ShowModal {
+interface Options_ShowModal {
   // 要现实的文本
   content: string;
   // 是否展示动画
@@ -27,16 +27,21 @@ interface ShowModal {
   openCallback?: Function;
   // 打开弹窗之前回调
   beforeOpenCallback?: Function;
+  // 点击弹框背景遮罩层是否可以关闭弹窗
+  isClickBgClose?: boolean;
 }
 
-const modal = {
-  oModalEle: null,
-  oBody: null,
-  oBodyCurPos: '',
-  sModalId: '',
-  options: {},
-  duration: 300,
-  create: function (options?: ShowModal) {
+class Modal {
+  oModalEle: any = null;
+  oBody: any = null;
+  oBodyCurPos: number = 0;
+  sModalId: string = '';
+  options: Options_ShowModal;
+  duration: number = 300;
+
+  constructor() { }
+
+  create(options: Options_ShowModal) {
     // 判断字符串里有没有标签
     let sContentHtml = '';
     if (/<[^>]+>/g.test(options.content)) {
@@ -80,14 +85,15 @@ const modal = {
                     </div>
                 </div>
             </div>
-            <div class="modal-bg"></div>
+            <div class="modal-bg" ${options.isClickBgClose ? 'data-id="modal-close-btn"' : ''}></div>
         </div>
         `
     );
 
     this.oModalEle = document.getElementById(this.sModalId) as HTMLDivElement;
-  },
-  close: function (event: any) {
+  }
+
+  close(event: any) {
     event.preventDefault();
     const oTarget = event.srcElement;
     const targetID = oTarget['dataset'].id;
@@ -121,8 +127,9 @@ const modal = {
       this.oBody.style.top = null;
       window.scrollTo(0, this.oBodyCurPos);
     }
-  },
-  show: function (options?: ShowModal) {
+  }
+
+  show(options?: Options_ShowModal) {
     // 防止重复生成
     if (document.getElementById(this.sModalId)) {
       return;
@@ -152,12 +159,16 @@ const modal = {
 
 
     this.remove();
-  },
-  remove: function () {
+  }
+
+  remove() {
     document.addEventListener('click', (ev) => {
       this.close(ev);
     }, false);
   }
-};
+
+}
+
+const modal = new Modal();
 
 export { modal };

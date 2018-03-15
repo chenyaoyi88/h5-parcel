@@ -50,7 +50,8 @@ const modalConfig = function(options?: ModalConfig) {
     isShowAnimate: options.isShowAnimate || true,
     confirmCallback: confirmCallback,
     openCallback: openCallback,
-    beforeOpenCallback: beforeOpenCallback
+    beforeOpenCallback: beforeOpenCallback,
+    isClickBgClose: true
   };
 };
 

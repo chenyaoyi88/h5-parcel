@@ -1,6 +1,6 @@
 import './toast.scss';
 
-interface Toast {
+interface Options_Toast {
   // 显示时间
   duration?: number;
 }
@@ -9,7 +9,7 @@ interface Toast {
  * toast 显示
  * @param {*String} text 要显示的文本内容
  */
-const toast = function(text: string, options: Toast = {}) {
+function toast(text: string, options: Options_Toast = {}) {
 
   const sToastID = `cyy-toast-${new Date().getTime()}`;
 
@@ -17,16 +17,13 @@ const toast = function(text: string, options: Toast = {}) {
     return false;
   }
 
-  const doc = document.body;
-  const toastText = text;
-
-  doc.insertAdjacentHTML(
+  document.body.insertAdjacentHTML(
     'beforeend',
     `<div class='toast' id='${sToastID}'>
-                        <div class='toast-wrap'>
-                            <div data-id="toast-content" class='toast-content'>${toastText}</div>
-                        </div>
-                    </div>`
+        <div class='toast-wrap'>
+            <div data-id="toast-content" class='toast-content'>${text || '--'}</div>
+        </div>
+    </div>`
   );
 
   const oToast = document.getElementById(sToastID);
@@ -40,9 +37,10 @@ const toast = function(text: string, options: Toast = {}) {
     oToastText.style.webkitAnimationDuration = options.duration + 's';
   }
 
-  oToastText.addEventListener('webkitAnimationEnd', function() {
-    doc.removeChild(oToast);
+  oToastText.addEventListener('webkitAnimationEnd', function () {
+    document.body.removeChild(oToast);
   });
 };
+
 
 export { toast };
