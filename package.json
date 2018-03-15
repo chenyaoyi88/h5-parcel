@@ -1,6 +1,6 @@
 {
   "name": "h5-parcel-demo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "用 parcel + typescript + sass 来开发单页活动的模版，用 puppeteer 来做界面自动化测试",
   "main": "index.ts",
   "scripts": {
