@@ -2,7 +2,7 @@
 
 一般用来开发简单的单页（活动页）配置，用 ts 代替 js，用 sass 代替 css，配置了开发和打包生产两种模式。
 
-开发模式：不会有任何文件生成。
+开发模式：会自动生成 .cache 和 dist 缓存文件，是为了提高热替换效率的，可以不用理会。
 
 生产模式：在此文件同级目录打包出 test（测试环境）/prod（生产环境） 文件夹，最终要上传到生产服务器的静态文件。
 
@@ -59,13 +59,18 @@ npm run preview:prod
   "host": "主机",
   "user": "用户名",
   "password": "密码",
-  // 如：https://www.baidu.com/baidu-web/act
-  // 访问首页：https://www.baidu.com/baidu-web/act/index.html
-  // 访问图片：https://www.baidu.com/baidu-web/act/images/test.png
   "url": "访问路径",  
-  // 如：./pub/baidu-web/act
   "uploadPath": "上传路径"
 }
+
+上传路径：就是把资源放到 ftp 的某个文件夹的路径，例如放到：./pub/baidu-web/act，
+
+访问路径：就是访问的基本url，例如设置为：https://www.baidu.com/baidu-web/act
+
+那首页的 URL 就是：https://www.baidu.com/baidu-web/act/index.html
+
+那图片的 URL 就是：https://www.baidu.com/baidu-web/act/images/test.png
+
 ```
 
 ```bash
